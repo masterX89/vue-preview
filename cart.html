@@ -40,6 +40,7 @@
     </p>
     <!-- 使用style绑定的方法 -->
     <!-- 与react类似,background-color并不能作为key，需要采用驼峰写法，由vue帮助解析 -->
+    <!-- transparent在面试题里常用于画三角形梯形 -->
     <div v-for="c in courses" :key="c" :style="{backgroundColor: selectedCourse2 === c ? '#aaa' : 'transParent'}"
       @click="selectedCourse2 = c">
       <div>{{ c }}</div>
