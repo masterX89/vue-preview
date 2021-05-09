@@ -10,13 +10,30 @@
 <body>
   <!-- 宿主文件 -->
   <div id="app">
-    <!-- 不使用react的{{}}写法，同时看似是静态字符串，实则动态绑定了data中的值，有两种写法 -->
+    <!-- 不使用react的{{}}写法，同时看似是静态字符串，实则动态绑定了data中的值，有两种写法，可简写 -->
     <!-- 问题：vbind是如何实现的 -->
     <!-- <h2 vbind:title="title"> -->
     <h2 :title="h2Title">
       <!-- 插值语法 -->
       {{title}}
     </h2>
+    <!-- 思考react的列表渲染方法，以及vdom：为什么要用id，key而不是index -->
+    <div v-for="c in courses" :key="c">
+      <div>{{ c }}</div>
+    </div>
+    <!-- v-model输入绑定，思考react如何做到 -->
+    <!-- 看下@click="handler(arg, event)"的语法是什么 -->
+    <!-- .enter是个修饰符，不加enter的话就需要在addCourse的事件中去判断用户按键 -->
+    <p>
+      <!-- 该方法存在问题，中文输入法情况下，输入完中文，英文回车会导致中文直接插入，例如输入“测试button” -->
+      <!-- <input v-model="course" type="text" v-on:keydown.enter="addCourse"/> -->
+      <!-- 总结vue中keydown，keyup和keypress -->
+      <input v-model="course" type="text" v-on:keypress.enter="addCourse"/>
+      {{course}}
+      <!-- 尝试一下三种语法 -->
+      <!-- <button v-on:click="addCourse">新增</button> -->
+      <button @click="addCourse">新增</button>
+    </p>
   </div>
   <script src="vue.js"></script>
   <script>
@@ -33,6 +50,16 @@
         return {
           title: '购物车',
           h2Title: 'test',
+          courses: ['红宝书', 'javascript权威指南'],
+          course: '',
+        }
+      },
+      methods: {
+        addCourse() {
+          // 1.添加course到courses
+          this.courses.push(this.course)
+          // 2.清空course
+          this.course = ''
         }
       },
     })
