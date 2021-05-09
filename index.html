@@ -1,12 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
+
 <body>
-    hello world
-    <script src="test.js"></script>
+  <!-- 宿主文件 -->
+  <div id="app">
+    {{title}}
+  </div>
+  <script src="vue.js"></script>
+  <script>
+    // TODO:
+    // 提问：1. el如何和div绑定，用的选择器么？
+    //      2. 响应式如何做到的，data修改，view也修改了
+    //      3. Vdata是什么语法?
+    // https://github.com/vuejs/vue-devtools
+    // 1.创建vue实例
+    const app = new Vue({
+      // css id选择器
+      el: '#app',
+      data() {
+        return {
+          title: 'hello Vue'
+        }
+      },
+    })
+
+    setTimeout(() => {
+      app.title = 'title is changed'
+    }, 1000);
+  </script>
 </body>
+
 </html>
