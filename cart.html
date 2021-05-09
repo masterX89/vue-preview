@@ -5,6 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    .active {
+      background-color: #aaa;
+    }
+  </style>
 </head>
 
 <body>
@@ -18,22 +23,31 @@
       {{title}}
     </h2>
     <!-- 思考react的列表渲染方法，以及vdom：为什么要用id，key而不是index -->
-    <div v-for="c in courses" :key="c">
+    <!-- class是对象或者数组 -->
+    <!-- @click方法可以放进method中，也可以使用表达式 -->
+    <div v-for="c in courses" :key="c" :class="{active: selectedCourse1 === c}" @click="selectedCourse1 = c">
       <div>{{ c }}</div>
     </div>
-    <!-- v-model输入绑定，思考react如何做到 -->
-    <!-- 看下@click="handler(arg, event)"的语法是什么 -->
-    <!-- .enter是个修饰符，不加enter的话就需要在addCourse的事件中去判断用户按键 -->
     <p>
       <!-- 该方法存在问题，中文输入法情况下，输入完中文，英文回车会导致中文直接插入，例如输入“测试button” -->
       <!-- <input v-model="course" type="text" v-on:keydown.enter="addCourse"/> -->
       <!-- 总结vue中keydown，keyup和keypress -->
-      <input v-model="course" type="text" v-on:keypress.enter="addCourse"/>
+      <input v-model="course" type="text" v-on:keypress.enter="addCourse" />
       {{course}}
       <!-- 尝试一下三种语法 -->
       <!-- <button v-on:click="addCourse">新增</button> -->
       <button @click="addCourse">新增</button>
     </p>
+    <!-- 使用style绑定的方法 -->
+    <!-- 与react类似,background-color并不能作为key，需要采用驼峰写法，由vue帮助解析 -->
+    <div v-for="c in courses" :key="c" :style="{backgroundColor: selectedCourse2 === c ? '#aaa' : 'transParent'}"
+      @click="selectedCourse2 = c">
+      <div>{{ c }}</div>
+    </div>
+    <!-- v-model输入绑定，思考react如何做到 -->
+    <!-- 看下@click="handler(arg, event)"的语法是什么 -->
+    <!-- .enter是个修饰符，不加enter的话就需要在addCourse的事件中去判断用户按键 -->
+
   </div>
   <script src="vue.js"></script>
   <script>
@@ -52,6 +66,8 @@
           h2Title: 'test',
           courses: ['红宝书', 'javascript权威指南'],
           course: '',
+          selectedCourse1: '',
+          selectedCourse2: '',
         }
       },
       methods: {
