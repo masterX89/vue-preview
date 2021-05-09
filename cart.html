@@ -22,12 +22,20 @@
       <!-- 插值语法 -->
       {{title}}
     </h2>
+    <!-- 官方建议v-if和v-for不写在一个标签中，防止出现优先级争抢 -->
+    <!-- 条件渲染 -->
+    <p v-if="courses.length === 0">没有信息</p>
+
     <!-- 思考react的列表渲染方法，以及vdom：为什么要用id，key而不是index -->
     <!-- class是对象或者数组 -->
     <!-- @click方法可以放进method中，也可以使用表达式 -->
-    <div v-for="c in courses" :key="c" :class="{active: selectedCourse1 === c}" @click="selectedCourse1 = c">
-      <div>{{ c }}</div>
+    <div class="courses-list" v-else>
+      <!-- 列表渲染 -->
+      <div v-for="c in courses" :key="c" :class="{active: selectedCourse1 === c}" @click="selectedCourse1 = c">
+        <div>{{ c }}</div>
+      </div>
     </div>
+
     <p>
       <!-- 该方法存在问题，中文输入法情况下，输入完中文，英文回车会导致中文直接插入，例如输入“测试button” -->
       <!-- <input v-model="course" type="text" v-on:keydown.enter="addCourse"/> -->
