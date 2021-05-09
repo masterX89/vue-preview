@@ -10,7 +10,10 @@
 <body>
   <!-- 宿主文件 -->
   <div id="app">
-    <h2>
+    <!-- 不使用react的{{}}写法，同时看似是静态字符串，实则动态绑定了data中的值，有两种写法 -->
+    <!-- 问题：vbind是如何实现的 -->
+    <!-- <h2 vbind:title="title"> -->
+    <h2 :title="h2Title">
       <!-- 插值语法 -->
       {{title}}
     </h2>
@@ -28,14 +31,12 @@
       el: '#app',
       data() {
         return {
-          title: 'hello Vue'
+          title: '购物车',
+          h2Title: 'test',
         }
       },
     })
 
-    setTimeout(() => {
-      app.title = 'title is changed'
-    }, 1000);
   </script>
 </body>
 
