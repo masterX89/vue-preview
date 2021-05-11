@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .active {
+      background-color: #aaa;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 宿主文件 -->
+  <div id="app"></div>
+  <script src="vue.js"></script>
+  <script>
+    // TODO:
+    // 提问：1. el如何和div绑定，用的选择器么？
+    //      2. 响应式如何做到的，data修改，view也修改了
+    //      3. Vdata是什么语法?
+    // https://github.com/vuejs/vue-devtools
+    // 1.创建vue实例
+    const app = new Vue({
+      // css id选择器
+      el: '#app',
+      data() {
+        return {
+          title: '购物车',
+          h2Title: 'test',
+          courses: ['红宝书', 'javascript权威指南'],
+          course: '',
+          selectedCourse1: '',
+          selectedCourse2: '',
+        }
+      },
+      methods: {
+        addCourse() {
+          // 1.添加course到courses
+          this.courses.push(this.course)
+          // 2.清空course
+          this.course = ''
+        }
+      },
+      render() {
+        // with的作用？
+        with (this) {
+          return _c('div', { attrs: { "id": "app" } }, [_c('h2', { attrs: { "title": h2Title } }, [_v("\n      " + _s(title) + "\n    ")]), _v(" "), (courses.length === 0) ? _c('p', [_v("没有信息")]) : _c('div', { staticClass: "courses-list" }, _l((courses), function (c) { return _c('div', { key: c, class: { active: selectedCourse1 === c }, on: { "click": function ($event) { selectedCourse1 = c } } }, [_c('div', [_v(_s(c))])]) }), 0), _v(" "), _c('p', [_c('input', { directives: [{ name: "model", rawName: "v-model", value: (course), expression: "course" }], attrs: { "type": "text" }, domProps: { "value": (course) }, on: { "keypress": function ($event) { if (!$event.type.indexOf('key') && _k($event.keyCode, "enter", 13, $event.key, "Enter")) return null; return addCourse($event) }, "input": function ($event) { if ($event.target.composing) return; course = $event.target.value } } }), _v("\n      " + _s(course) + "\n      "), _v(" "), _c('button', { on: { "click": addCourse } }, [_v("新增")])]), _v(" "), _l((courses), function (c) { return _c('div', { key: c, style: ({ backgroundColor: selectedCourse2 === c ? '#aaa' : 'transParent' }), on: { "click": function ($event) { selectedCourse2 = c } } }, [_c('div', [_v(_s(c))])]) })], 2)
+        }
+      }
+    })
+    console.log(app.$options.render)
+  </script>
+</body>
+
+</html>
