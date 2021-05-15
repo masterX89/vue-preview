@@ -35,6 +35,19 @@
         <div>{{ c }}</div>
       </div>
     </div>
+    <!-- 表达式 -->
+    <p>
+      {{courses.length+'门'}}
+    </p>
+    <!-- 计算属性 -->
+    <!-- 不需要data加入 -->
+    <p>
+      {{coursesLen}}
+    </p>
+    <!-- 监听器 -->
+    <p>
+      {{coursesLenWatch}}
+    </p>
 
     <p>
       <!-- 该方法存在问题，中文输入法情况下，输入完中文，英文回车会导致中文直接插入，例如输入“测试button” -->
@@ -77,6 +90,7 @@
           course: '',
           selectedCourse1: '',
           selectedCourse2: '',
+          coursesLenWatch: 0,
         }
       },
       methods: {
@@ -85,6 +99,28 @@
           this.courses.push(this.course)
           // 2.清空course
           this.course = ''
+        }
+      },
+      computed: {
+        coursesLen() {
+          // 计算属性有缓存特性，值没有变化，页面不会重新渲染，
+          // 如果放到method，每次都会渲染
+          return this.courses.length + '门'
+        }
+      },
+      // 界面实际为0，原因是监听器只有在监听到变化才会更新，初始化时未执行
+      // watch: {
+      //   courses(newValue, oldValue) {
+      //     this.coursesLenWatch = newValue.length + '门'
+      //   }
+      // },
+      watch: {
+        courses: {
+          immediate: true, // 初始化时立即执行
+          deep: true, // 深度比较
+          handler(newValue, oldValue) {
+            this.coursesLenWatch = newValue.length + '门'
+          }
         }
       },
     })
