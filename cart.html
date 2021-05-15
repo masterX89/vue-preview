@@ -101,6 +101,8 @@
           this.course = ''
         }
       },
+      // 多个值影响一个值，导致一个最新的数值生成
+      // 计算属性还有缓存特性
       computed: {
         coursesLen() {
           // 计算属性有缓存特性，值没有变化，页面不会重新渲染，
@@ -114,6 +116,8 @@
       //     this.coursesLenWatch = newValue.length + '门'
       //   }
       // },
+      // 语境差异，一个数值变化，会影响多个值
+      // 更加通用的方法，适合异步或者大开销行为
       watch: {
         courses: {
           immediate: true, // 初始化时立即执行
