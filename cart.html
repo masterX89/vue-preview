@@ -22,19 +22,7 @@
       <!-- 插值语法 -->
       {{title}}
     </h2>
-    <!-- 官方建议v-if和v-for不写在一个标签中，防止出现优先级争抢 -->
-    <!-- 条件渲染 -->
-    <p v-if="courses.length === 0">没有信息</p>
-
-    <!-- 思考react的列表渲染方法，以及vdom：为什么要用id，key而不是index -->
-    <!-- class是对象或者数组 -->
-    <!-- @click方法可以放进method中，也可以使用表达式 -->
-    <div class="courses-list" v-else>
-      <!-- 列表渲染 -->
-      <div v-for="c in courses" :key="c" :class="{active: selectedCourse1 === c}" @click="selectedCourse1 = c">
-        <div>{{ c }}</div>
-      </div>
-    </div>
+    <course-list :courses="courses"></course-list>
     <!-- 表达式 -->
     <p>
       {{courses.length+'门'}}
@@ -73,6 +61,37 @@
   </div>
   <script src="vue.js"></script>
   <script>
+    Vue.component('course-list', {
+      data() {
+        return {
+          selectedCourse: '',
+        }
+      },
+      props: {
+        courses: {
+          type: Array,
+          default: [],
+        }
+      },
+      template: `
+        <div>
+          <!-- 官方建议v-if和v-for不写在一个标签中，防止出现优先级争抢 -->
+    <!-- 条件渲染 -->
+    <p v-if="courses.length === 0">没有信息</p>
+
+    <!-- 思考react的列表渲染方法，以及vdom：为什么要用id，key而不是index -->
+    <!-- class是对象或者数组 -->
+    <!-- @click方法可以放进method中，也可以使用表达式 -->
+    <div class="courses-list" v-else>
+      <!-- 列表渲染 -->
+      <div v-for="c in courses" :key="c" :class="{active: selectedCourse === c}" @click="selectedCourse = c">
+        <div>{{ c }}</div>
+      </div>
+    </div>
+        </div>
+      `
+
+    })
     // TODO:
     // 提问：1. el如何和div绑定，用的选择器么？
     //      2. 响应式如何做到的，data修改，view也修改了
@@ -88,7 +107,6 @@
           h2Title: 'test',
           courses: ['红宝书', 'javascript权威指南'],
           course: '',
-          selectedCourse1: '',
           selectedCourse2: '',
           coursesLenWatch: 0,
         }
