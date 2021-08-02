@@ -57,13 +57,14 @@
         <div>
           <input v-model="course" type="text" v-on:keypress.enter="addCourse" />
           <button @click="addCourse">新增</button>
-          {{course}}
         </div>
       `,
       methods: {
         addCourse() {
-          this.$emit('add-course', this.course)
-          this.course = ''
+          if (this.course !== '') {
+            this.$emit('add-course', this.course)
+            this.course = ''
+          } else { /* nothing to do*/ }
         }
       },
     })
