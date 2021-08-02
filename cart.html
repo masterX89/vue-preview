@@ -16,14 +16,10 @@
   <div id="app">
     <h2 :title="h2Title">{{title}}</h2>
     <course-list :courses="courses"></course-list>
+    <course-add @add-course="addCourse"></course-add>
     <p>{{courses.length+'门'}}</p>
     <p>{{coursesLen}}</p>
     <p>{{coursesLenWatch}}</p>
-    <p>
-      <input v-model="course" type="text" v-on:keypress.enter="addCourse" />
-      {{course}}
-      <button @click="addCourse">新增</button>
-    </p>
   </div>
   <script src="vue.js"></script>
   <script>
@@ -51,6 +47,27 @@
       `
     })
 
+    Vue.component('course-add', {
+      data() {
+        return {
+          course: '',
+        }
+      },
+      template: `
+        <div>
+          <input v-model="course" type="text" v-on:keypress.enter="addCourse" />
+          <button @click="addCourse">新增</button>
+          {{course}}
+        </div>
+      `,
+      methods: {
+        addCourse() {
+          this.$emit('add-course', this.course)
+          this.course = ''
+        }
+      },
+    })
+
     const app = new Vue({
       el: '#app',
       data() {
@@ -58,15 +75,12 @@
           title: '购物车',
           h2Title: 'test',
           courses: ['红宝书', 'javascript权威指南'],
-          course: '',
-          selectedCourse2: '',
           coursesLenWatch: 0,
         }
       },
       methods: {
-        addCourse() {
-          this.courses.push(this.course)
-          this.course = ''
+        addCourse(course) {
+          this.courses.push(course)
         }
       },
       computed: {
