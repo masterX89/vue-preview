@@ -13,51 +13,17 @@
 </head>
 
 <body>
-  <!-- 宿主文件 -->
   <div id="app">
-    <!-- 不使用react的{{}}写法，同时看似是静态字符串，实则动态绑定了data中的值，有两种写法，可简写 -->
-    <!-- 问题：vbind是如何实现的 -->
-    <!-- <h2 vbind:title="title"> -->
-    <h2 :title="h2Title">
-      <!-- 插值语法 -->
-      {{title}}
-    </h2>
+    <h2 :title="h2Title">{{title}}</h2>
     <course-list :courses="courses"></course-list>
-    <!-- 表达式 -->
+    <p>{{courses.length+'门'}}</p>
+    <p>{{coursesLen}}</p>
+    <p>{{coursesLenWatch}}</p>
     <p>
-      {{courses.length+'门'}}
-    </p>
-    <!-- 计算属性 -->
-    <!-- 不需要data加入 -->
-    <p>
-      {{coursesLen}}
-    </p>
-    <!-- 监听器 -->
-    <p>
-      {{coursesLenWatch}}
-    </p>
-
-    <p>
-      <!-- 该方法存在问题，中文输入法情况下，输入完中文，英文回车会导致中文直接插入，例如输入“测试button” -->
-      <!-- <input v-model="course" type="text" v-on:keydown.enter="addCourse"/> -->
-      <!-- 总结vue中keydown，keyup和keypress -->
       <input v-model="course" type="text" v-on:keypress.enter="addCourse" />
       {{course}}
-      <!-- 尝试一下三种语法 -->
-      <!-- <button v-on:click="addCourse">新增</button> -->
       <button @click="addCourse">新增</button>
     </p>
-    <!-- 使用style绑定的方法 -->
-    <!-- 与react类似,background-color并不能作为key，需要采用驼峰写法，由vue帮助解析 -->
-    <!-- transparent在面试题里常用于画三角形梯形 -->
-    <div v-for="c in courses" :key="c" :style="{backgroundColor: selectedCourse2 === c ? '#aaa' : 'transParent'}"
-      @click="selectedCourse2 = c">
-      <div>{{ c }}</div>
-    </div>
-    <!-- v-model输入绑定，思考react如何做到 -->
-    <!-- 看下@click="handler(arg, event)"的语法是什么 -->
-    <!-- .enter是个修饰符，不加enter的话就需要在addCourse的事件中去判断用户按键 -->
-
   </div>
   <script src="vue.js"></script>
   <script>
@@ -75,31 +41,17 @@
       },
       template: `
         <div>
-          <!-- 官方建议v-if和v-for不写在一个标签中，防止出现优先级争抢 -->
-    <!-- 条件渲染 -->
-    <p v-if="courses.length === 0">没有信息</p>
-
-    <!-- 思考react的列表渲染方法，以及vdom：为什么要用id，key而不是index -->
-    <!-- class是对象或者数组 -->
-    <!-- @click方法可以放进method中，也可以使用表达式 -->
-    <div class="courses-list" v-else>
-      <!-- 列表渲染 -->
-      <div v-for="c in courses" :key="c" :class="{active: selectedCourse === c}" @click="selectedCourse = c">
-        <div>{{ c }}</div>
-      </div>
-    </div>
+          <p v-if="courses.length === 0">没有信息</p>
+          <div class="courses-list" v-else>
+            <div v-for="c in courses" :key="c" :class="{active: selectedCourse === c}" @click="selectedCourse = c">
+              <div>{{ c }}</div>
+            </div>
+          </div>
         </div>
       `
-
     })
-    // TODO:
-    // 提问：1. el如何和div绑定，用的选择器么？
-    //      2. 响应式如何做到的，data修改，view也修改了
-    //      3. Vdata是什么语法?
-    // https://github.com/vuejs/vue-devtools
-    // 1.创建vue实例
+
     const app = new Vue({
-      // css id选择器
       el: '#app',
       data() {
         return {
@@ -113,29 +65,15 @@
       },
       methods: {
         addCourse() {
-          // 1.添加course到courses
           this.courses.push(this.course)
-          // 2.清空course
           this.course = ''
         }
       },
-      // 多个值影响一个值，导致一个最新的数值生成
-      // 计算属性还有缓存特性
       computed: {
         coursesLen() {
-          // 计算属性有缓存特性，值没有变化，页面不会重新渲染，
-          // 如果放到method，每次都会渲染
           return this.courses.length + '门'
         }
       },
-      // 界面实际为0，原因是监听器只有在监听到变化才会更新，初始化时未执行
-      // watch: {
-      //   courses(newValue, oldValue) {
-      //     this.coursesLenWatch = newValue.length + '门'
-      //   }
-      // },
-      // 语境差异，一个数值变化，会影响多个值
-      // 更加通用的方法，适合异步或者大开销行为
       watch: {
         courses: {
           immediate: true, // 初始化时立即执行
@@ -146,7 +84,6 @@
         }
       },
     })
-
   </script>
 </body>
 
