@@ -9,11 +9,30 @@
     .active {
       background-color: #aaa;
     }
+
+    .message-box {
+      padding: 10px 20px;
+      background: #4fc08d;
+      border: 1px solid #42b983;
+    }
+
+    .message-box-close {
+      float: right;
+    }
   </style>
 </head>
 
 <body>
   <div id="app">
+    <msg-course-add :is-show.sync="isShow">
+      <template #header>
+        <strong>{{title}}恭喜</strong>
+      </template>
+      <!-- {{course}}存在Bug -->
+      <template>
+        新增成功
+      </template>
+    </msg-course-add>
     <h2 :title="h2Title">{{title}}</h2>
     <course-list :courses="courses"></course-list>
     <course-add v-model="course" @add-course="addCourse"></course-add>
@@ -70,10 +89,26 @@
       },
     })
 
+    Vue.component('msg-course-add', {
+      props: {
+        isShow: {
+          type: Boolean,
+          default: false,
+        }
+      },
+      template: `
+        <div class="message-box" v-if="isShow">
+          <slot name="header"></slot>
+          <slot></slot>
+          <span class="message-box-close" @click="$emit('update:isShow',false)">X</span>
+        </div>
+      `
+    })
     const app = new Vue({
       el: '#app',
       data() {
         return {
+          isShow: false,
           title: '购物车',
           h2Title: 'test',
           course: '',
@@ -85,6 +120,7 @@
         addCourse() {
           if (this.course !== '') {
             this.courses.push(this.course)
+            this.isShow = true
             this.course = ''
           } else {/* nothing to do*/ }
         }
