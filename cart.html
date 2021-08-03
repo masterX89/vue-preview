@@ -104,6 +104,14 @@
         </div>
       `
     })
+    function getCourse() {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(['红宝书', 'javascript权威指南'])
+        }, 1000)
+      })
+    }
+
     const app = new Vue({
       el: '#app',
       data() {
@@ -112,9 +120,13 @@
           title: '购物车',
           h2Title: 'test',
           course: '',
-          courses: ['红宝书', 'javascript权威指南'],
+          courses: [],
           coursesLenWatch: 0,
         }
+      },
+      async created() {
+        const courses = await getCourse()
+        this.courses = courses
       },
       methods: {
         addCourse() {
