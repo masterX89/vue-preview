@@ -15,15 +15,15 @@
 <body>
   <div id="app">
     <h2 :title="h2Title">{{title}}</h2>
-    <course-list :courses="courses"></course-list>
-    <course-add v-model="course" @add-course="addCourse"></course-add>
+    <CourseList :courses="courses"></CourseList>
+    <CourseAdd v-model="course" @add-course="addCourse"></CourseAdd>
     <p>{{courses.length+'门'}}</p>
     <p>{{coursesLen}}</p>
     <p>{{coursesLenWatch}}</p>
   </div>
   <script src="vue.js"></script>
   <script>
-    Vue.component('course-list', {
+    Vue.component('CourseList', {
       data() {
         return {
           selectedCourse: '',
@@ -47,7 +47,7 @@
       `
     })
 
-    Vue.component('course-add', {
+    Vue.component('CourseAdd', {
       props: {
         value: {
           type: String,
